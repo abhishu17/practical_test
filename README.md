@@ -74,6 +74,36 @@ Following parameters have been configured in application.
    and can change the properties on the fly.
 3. The API Key can be secured in vault or secure properties in mule cloudhub. 
 
+# Non functional requirements
+
+**Security
+
+Currently the weather API is deployed on Mule any point platform and the backend code (mule application) is deployed over cloud hub. API Gateway protects the underlying backend APIs and also limit the number of access using policies.
+The APIs can be protected through various policies at run time. For instance, currently the following policies are enabled.
+
+a.	Throttling  (which allows only 2 request per 10 sec)
+
+*Besides this we can add OAuth2.0 mule component for authentication of user.
+
+**Scalability
+
+Solution deploy over cloud are auto scalable. More processing power can be added on the fly. Moreover, the auto scaling can be triggered by policies as CPU & memory usage of the server.
+
+**Performance-
+
+Mule flows and the message processor activities are highly optimized piece of code. However, there are various way to tune the mule application as data weave operations, remove the redundant design activities, configuration settings etc. Moreover, the underlying JVM also can be tuned for heap memory and garbage collection settings.
+
+
+
+# Deployment
+
+Deployment can be achived by following ways
+
+1. Using anypoint studio
+
+2. Using maven command
+
+3. Using Jenkins pipeline
 
 # Documentation
   Documents can be generated in mule anypoint studio directly.
