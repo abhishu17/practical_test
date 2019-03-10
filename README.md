@@ -51,10 +51,21 @@ Following parameters have been configured in application.
 	Melbourne_cloudiness_threshold=50
 
 4. API Key needs to be updated 
-Note: Currently, we are using environment configuration file, therefore, after performing any change the application needs to be restarted to re-read he configuration values.
+# Note: 
+1. Currently, we are using environment configuration file, therefore, after performing any change the application needs to be restarted to re-read he configuration values.
+2. We can use java based configuartion to read the properties dynamically
+and can change the properties on the fly.
+3. The API Key can be secured in vault or secure properties in mule cloudhub. 
+
 
 # Documentation
-  Documents can be access in project file.
+  Documents can be generated in mule anypoint studio directly.
+  navigate to File/Export Studio Documentation
+  
+
+ 
+ 
+ 
 
 
 
