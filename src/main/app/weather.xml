@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:context="http://www.springframework.org/schema/context" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+  
+     
+   <configuration doc:name="Configuration">
+	<expression-language>
+		<import class="weatherwatcher.WeatherManager" />
+		<global-functions>
+	    def calculateScore(temperature,windspeed, winddirection)
+	    {
+	    return new weatherwatcher.WeatherManager().calcScore(temperature,windspeed, winddirection);
+	    }
+   </global-functions>
+	</expression-language>
+</configuration>
+    <context:property-placeholder location="configuration-${env}.properties" />
+    <http:request-config name="WeatherAPI_HTTP_Request_Configuration" host="${openweatherapi.host}" port="${openweatherapi.port}" basePath="${openweatherapi.basePath}" doc:name="HTTP Request Configuration"/>
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8086" doc:name="HTTP Listener Configuration"/>
+    <sub-flow name="fetch_city_threshold_values">
+        <dw:transform-message doc:name="Read dynamic threshold">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+p(flowVars.city ++ "_wind_threshold")]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="wind_speed" value="#[payload]" doc:name="set wind speed threshold"/>
+        <dw:transform-message doc:name="Read dynamic threshold">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+p(flowVars.city ++ "_cloudiness_threshold")]]></dw:set-payload>
+        </dw:transform-message>
+        <set-variable variableName="cloudiness" value="#[payload]" doc:name="set cloudiness threshold"/>
+    </sub-flow>
+    <sub-flow name="find_City_Location_Code">
+        <logger message="Getting city code for #[flowVars.city]" level="INFO" doc:name="Logger"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+
+p(flowVars.city)
+]]></dw:set-payload>
+        </dw:transform-message>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <set-variable variableName="locationCode" value="#[payload]" doc:name="Set City Location Code"/>
+        <logger message="City location code is #[flowVars.locationCode]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    
+    <sub-flow name="call_to_openweather_API">
+        <logger level="INFO" doc:name="Logger" message="openweather API Call start -&gt; Location code #[flowVars.locationCode] for ctiy #[flowVars.city]"/>
+        <flow-ref name="find_City_Location_Code" doc:name="find_City_Location_Code"/>
+        <flow-ref name="fetch_city_threshold_values" doc:name="fetch_city_threshold_values"/>
+
+        <logger message="cloudiness #[flowVars.cloudiness] ------------------- #[flowVars.wind_speed]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="WeatherAPI_HTTP_Request_Configuration" path="/forecast" method="GET" doc:name="Invoking Openweather API">
+            <http:request-builder>
+                <http:query-param paramName="APPID" value="${APIKEY}"/>
+                <http:query-param paramName="id" value="#[flowVars.locationCode]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Filter &amp; Sort API response" metadata:id="08ff0fc1-645d-415d-a315-634fdf53f222">
+            <dw:input-payload doc:sample="json_examples\openweatherapi_forecast_reponse.json" mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+
+(payload.list filter (( $.wind.speed < flowVars.wind_speed ) and ( $.clouds.all < flowVars.cloudiness)) map ((list,indexOfOrder) ->
+	{
+		datetime: list.dt_txt,
+		location: payload.city.id,
+		score: calculateScore(list.main.temp, list.wind.speed, list.wind.deg)
+	}
+	) orderBy $.score) [0 to 4]
+
+
+]]></dw:set-payload>
+        </dw:transform-message>
+        <logger message="openweather API Call End -&gt;  -&gt;  #[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <flow name="weatherFlow">
+
+        <choice doc:name="Check cityname in request">
+            <when expression="#[message.inboundProperties.'http.query.params'.city != null ]">
+                <set-variable variableName="city" value="#[message.inboundProperties.'http.query.params'.city]" doc:name="Set City Name"/>
+
+                <flow-ref name="call_to_openweather_API" doc:name="call_to_openweather_API"/>
+
+            </when>
+            <when expression="#[message.inboundProperties.'http.query.params'.city == null ]">
+                <logger message="Location code is not provided! API will fetch launch windows for all locations." level="INFO" doc:name="Logger"/>
+                <dw:transform-message doc:name="Read all city list">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+%var list =p('city_list')
+---
+list splitBy (',')
+]]></dw:set-payload>
+                </dw:transform-message>
+
+                <set-variable variableName="output" value="#[new java.util.ArrayList()]" doc:name="Variable ( initiating Array object list)"/>
+
+                <foreach doc:name="For Each (Iterate over all configured cities )">
+                    <logger message="Fetching datea for --------&gt; #[payload]" level="INFO" doc:name="Logger"/>
+                    <set-variable variableName="city" value="#[payload]" doc:name="set city name"/>
+
+                    <flow-ref name="call_to_openweather_API" doc:name="call_to_openweather_API"/>
+                    <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+
+                    <expression-transformer expression="#[flowVars.output.add(payload)]" doc:name="Expression"/>
+                </foreach>
+                <set-payload value="#[flowVars.output.toString()]" doc:name="Aggregate result and set as payload"/>
+                <json:object-to-json-transformer doc:name="Object to JSON"/>
+                <dw:transform-message doc:name="Flatten the json" metadata:id="4c7146b8-d08d-45de-8386-1393f997c9aa">
+                    <dw:input-payload doc:sample="json_examples\temp.json" mimeType="application/json"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+
+---
+
+(flatten payload map ((list, indexOrder)->{
+	
+	"datetime": list.datetime,
+    "location": list.location,  
+    "score": list.score
+}) orderBy $.score ) [0 to 4]
+
+
+
+]]></dw:set-payload>
+                </dw:transform-message>
+                
+            </when>
+            <otherwise>
+                <logger message="This is default flow." level="INFO" doc:name="Logger"/>
+                <set-payload value="Contact administrator!" doc:name="Set Payload"/>
+            </otherwise>
+        </choice>
+        <dw:transform-message doc:name="Generate response">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+launchWindows: payload 
+]]></dw:set-payload>
+        </dw:transform-message>
+        <exception-strategy ref="globalCatch_Exception_Strategy" doc:name="Reference Exception Strategy"/>
+
+
+
+    </flow>
+</mule>

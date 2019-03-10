@@ -1,0 +1,58 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "launchWindows"
+  ],
+  "properties": {
+    "launchWindows": {
+      "$id": "#/properties/launchWindows",
+      "type": "array",
+      "title": "The Launchwindows Schema",
+      "items": {
+        "$id": "#/properties/launchWindows/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "location",
+          "datetime",
+          "score"
+        ],
+        "properties": {
+          "location": {
+            "$id": "#/properties/launchWindows/items/properties/location",
+            "type": "string",
+            "title": "The Location Schema",
+            "default": "",
+            "examples": [
+              "Melbourne"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "datetime": {
+            "$id": "#/properties/launchWindows/items/properties/datetime",
+            "type": "string",
+            "title": "The Datetime Schema",
+            "default": "",
+            "examples": [
+              "2016-03-03 17:01:31"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "score": {
+            "$id": "#/properties/launchWindows/items/properties/score",
+            "type": "integer",
+            "title": "The Score Schema",
+            "default": 0,
+            "examples": [
+              3
+            ]
+          }
+        }
+      }
+    }
+  }
+}

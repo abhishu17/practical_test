@@ -1,0 +1,144 @@
+{
+  "launchWindows": [
+    {
+      "datetime": "2019-03-13 21:00:00",
+      "location": 7839805,
+      "speed": 0.42,
+      "cloud": 0,
+      "score": 262
+    },
+    {
+      "datetime": "2019-03-13 18:00:00",
+      "location": 7839805,
+      "speed": 1.26,
+      "cloud": 0,
+      "score": 270
+    },
+    {
+      "datetime": "2019-03-13 09:00:00",
+      "location": 7839805,
+      "speed": 1.95,
+      "cloud": 8,
+      "score": 275
+    },
+    {
+      "datetime": "2019-03-13 15:00:00",
+      "location": 7839805,
+      "speed": 1.87,
+      "cloud": 0,
+      "score": 275
+    },
+    {
+      "datetime": "2019-03-14 00:00:00",
+      "location": 7839805,
+      "speed": 1.21,
+      "cloud": 0,
+      "score": 275
+    },
+    {
+      "datetime": "2019-03-10 18:00:00",
+      "location": 2073124,
+      "speed": 3.15,
+      "cloud": 8,
+      "score": 289
+    },
+    {
+      "datetime": "2019-03-10 21:00:00",
+      "location": 2073124,
+      "speed": 3.86,
+      "cloud": 12,
+      "score": 289
+    },
+    {
+      "datetime": "2019-03-10 15:00:00",
+      "location": 2073124,
+      "speed": 3.94,
+      "cloud": 36,
+      "score": 291
+    },
+    {
+      "datetime": "2019-03-11 18:00:00",
+      "location": 2073124,
+      "speed": 3.72,
+      "cloud": 20,
+      "score": 292
+    },
+    {
+      "datetime": "2019-03-11 21:00:00",
+      "location": 2073124,
+      "speed": 4.47,
+      "cloud": 0,
+      "score": 292
+    },
+    {
+      "datetime": "2019-03-14 15:00:00",
+      "location": 2163355,
+      "speed": 1,
+      "cloud": 0,
+      "score": 263
+    },
+    {
+      "datetime": "2019-03-14 18:00:00",
+      "location": 2163355,
+      "speed": 1.01,
+      "cloud": 0,
+      "score": 264
+    },
+    {
+      "datetime": "2019-03-12 18:00:00",
+      "location": 2163355,
+      "speed": 1.67,
+      "cloud": 0,
+      "score": 266
+    },
+    {
+      "datetime": "2019-03-14 21:00:00",
+      "location": 2163355,
+      "speed": 1.2,
+      "cloud": 0,
+      "score": 266
+    },
+    {
+      "datetime": "2019-03-12 15:00:00",
+      "location": 2163355,
+      "speed": 2.27,
+      "cloud": 0,
+      "score": 267
+    },
+    {
+      "datetime": "2019-03-13 21:00:00",
+      "location": 2063523,
+      "speed": 4.17,
+      "cloud": 0,
+      "score": 283
+    },
+    {
+      "datetime": "2019-03-10 03:00:00",
+      "location": 2063523,
+      "speed": 1.51,
+      "cloud": 12,
+      "score": 284
+    },
+    {
+      "datetime": "2019-03-10 21:00:00",
+      "location": 2063523,
+      "speed": 4.96,
+      "cloud": 0,
+      "score": 284
+    },
+    {
+      "datetime": "2019-03-10 06:00:00",
+      "location": 2063523,
+      "speed": 4.44,
+      "cloud": 0,
+      "score": 285
+    },
+    {
+      "datetime": "2019-03-11 00:00:00",
+      "location": 2063523,
+      "speed": 4.77,
+      "cloud": 0,
+      "score": 285
+    }
+  ]
+}

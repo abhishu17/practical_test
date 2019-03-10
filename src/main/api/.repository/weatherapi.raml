@@ -1,0 +1,27 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/162dcee3-7e02-4cf3-8683-c9a6f62f5a69/ # 
+title: WeatherAPI
+version: 1.0
+mediaType: application/json
+
+traits: 
+  responseMessage:
+    usage: response message details
+    description: 
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: !include examples/launchwindow_response.json
+
+
+/weather:
+ get:
+   displayName: request to fetch all launch windows for all locations
+   description: return list of all locations launch windows
+   queryParameters: 
+      city:
+        description: 
+        type: string
+        required: false    
+   is: [responseMessage]
