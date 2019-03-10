@@ -4,18 +4,14 @@ This mulesoft based solution Create & expose APIs for Rocketo users to fetch lau
 temperature, wind speed and direction.
 
 
-#Getting started
+# Getting started
 You may download the example projects and import them to Anypoint Studio.
 git clone https://github.com/abhishu17/practical_test.git
 
-
-You may also access the README.md file from the folder for each of these examples. The README.md file contains the use case and instructions on how to setup and run these examples.
-
-
-#Assumptions
+# Assumptions
 
 
-#Set Up and Run the Example
+# Set Up and Run the Example
 Complete the following procedure to create, then run this example in your own instance of Anypoint Studio. 
 
 Open the Example project in Anypoint Studio after download.
@@ -35,7 +31,7 @@ http://rocketo-weather-apic.us-e2.cloudhub.io/weather?city=Perth (For selected c
 http://rocketo-weather-apic.us-e2.cloudhub.io/weather (For all cities)
 
 
-#Configuration required:
+# Configuration required:
 Following parameters have been configured in application.
  
 1. City List: 
@@ -57,7 +53,7 @@ Following parameters have been configured in application.
 4. API Key needs to be updated 
 Note: Currently, we are using environment configuration file, therefore, after performing any change the application needs to be restarted to re-read he configuration values.
 
-#Documentation
+# Documentation
   Documents can be access in project file.
 
 
