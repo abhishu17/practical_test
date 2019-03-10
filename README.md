@@ -27,32 +27,43 @@ In the Package Explorer pane in Studio, right-click the project name, then selec
 Access the following URL in browser ( you can change the port and query parameter according to need)
 
 **http://localhost:8094/api/weather?city=Perth**
+
 **http://localhost:8094/api/weather**
 
 Also the application has been deployed in cloud hub and accessible at below URLs
 
 http://rocketo-weather-apic.us-e2.cloudhub.io/weather?city=Perth (For selected city)
+
 http://rocketo-weather-apic.us-e2.cloudhub.io/weather (For all cities)
 
 
 # Configuration required:
+
 Following parameters have been configured in application.
  
 1. City List: 
+
    To add a further city in the list, name can be added in this configuration.
    city_list=Melbourne,Darwin,Hobart,Perth
    
 2. City list Location code:
-    Melbourne=7839805
+
+        Melbourne=7839805
+	
 	Darwin=2073124
+	
 	Hobart=2163355
+	
 	Perth=2063523  
     
 3. City list threshold values:
-   After adding the city list, threshold values need be added as below  	
+    
+    After adding the city list, threshold values need be added as below  	
 	
 	Melbourne_wind_threshold=10
+	
 	Melbourne_cloudiness_threshold=50
+	
 
 4. API Key needs to be updated 
 
@@ -68,9 +79,8 @@ Following parameters have been configured in application.
   Documents can be generated in mule anypoint studio directly.
   navigate to File/Export Studio Documentation
   
+ ![alt text](https://github.com/abhishu17/practical_test/blob/master/images/RuntimeManager.jpg)
+ 
+ ![alt text](https://github.com/abhishu17/practical_test/blob/master/images/preview.png)
   
- ![(/images/RuntimeManager.jpg)
-Format: ![]
-  
-  ![(/images/preview.png)
-Format: ![]
+ 
