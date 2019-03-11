@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:context="http://www.springframework.org/schema/context" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:cors="http://www.mulesoft.org/schema/mule/cors" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:context="http://www.springframework.org/schema/context" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 http://www.mulesoft.org/schema/mule/api-platform-gw http://www.mulesoft.org/schema/mule/api-platform-gw/current/mule-api-platform-gw.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/cors http://www.mulesoft.org/schema/mule/cors/current/mule-cors.xsd">
     <http:listener-config name="weatherapi-httpListenerConfig" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
     <apikit:config name="weatherapi-config" raml="weatherapi.raml" consoleEnabled="false" doc:name="Router"/>
+    <cors:config name="Cors_Configuration" doc:name="Cors Configuration"/>
+    <api-platform-gw:api apiName="${apiName}" version="${apiVersion}" flowRef="weatherapi-main" create="true" doc:name="API Autodiscovery"/>
 
     <flow name="weatherapi-main">
         <http:listener config-ref="weatherapi-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
@@ -21,6 +25,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <flow-ref name="weatherFlow" doc:name="weatherFlow"/>
 
     </flow>
+
     <apikit:mapping-exception-strategy name="weatherapi-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
