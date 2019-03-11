@@ -109,7 +109,14 @@ Deployment can be achived by following ways
   Documents can be generated in mule anypoint studio directly.
   navigate to File/Export Studio Documentation
   
+# images
+  
+ **Runtime manager
+ 
  ![alt text](https://github.com/abhishu17/practical_test/blob/master/images/RuntimeManager.jpg)
+ 
+ 
+ **API Response
  
  ![alt text](https://github.com/abhishu17/practical_test/blob/master/images/preview.png)
   
