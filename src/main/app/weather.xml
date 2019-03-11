@@ -89,6 +89,9 @@ p(flowVars.city)
         <logger message="openweather API Call End -&gt;  -&gt;  #[payload]" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <flow name="weatherFlow">
+        <scripting:transformer doc:name="Groovy (Set message correlation id)">
+            <scripting:script engine="Groovy"><![CDATA[message.correlationId=message.id]]></scripting:script>
+        </scripting:transformer>
 
         <choice doc:name="Check cityname in request">
             <when expression="#[message.inboundProperties.'http.query.params'.city != null ]">
