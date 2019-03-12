@@ -73,6 +73,7 @@ Following parameters have been configured in application.
 2. We can use java based configuration to read the properties dynamically
    and can change the properties on the fly.
 3. The API Key can be secured in vault or secure properties in mule cloudhub. 
+4. This is non-maven project, we can create the maven project and control dependecies from their.
 
 # Non functional requirements
 
