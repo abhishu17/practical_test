@@ -83,8 +83,19 @@ Currently the weather API is deployed on Mule any point platform and the backend
 The APIs can be protected through various policies at run time. For instance, currently the following policies are enabled.
 
 a.	Throttling  (which allows only 2 request per 10 sec)
+b.      OAuth2.0 External token access proider
 
-*Besides this we can add OAuth2.0 mule component for authentication of user.
+   In order to use weather service, use following client_id and client_secret to access the token at below URL and then add access token in URL to fetch the weather details.
+   
+   http://blc-api.us-e2.cloudhub.io/oauth/token
+   client_id= 59e1bb6e56254ce390c0c4b6173a3b4e
+   client_secret= C529733422264EA3837c23560899Fe53
+   grant_type=client_credentials
+   
+   Now, access the url after updating the access token
+   http://rocketo-weather-apic.us-e2.cloudhub.io/weather?access_token=0cnESBbHfKutboTpqUjaXJGkAMnzgJDbg14jeWXDJRIr9iAigGTOq0RZCGY2EfmlAWFMuMBa5QJH9RNZttddhA
+   
+   
 
 **Scalability
 
